@@ -7,6 +7,9 @@ import datetime
 ni = 1000
 epsilon = 0.00005
 alpha = 0.1
+errors = []
+total_errors = []
+weights = [[], [], []]
 # Average male height (US): 5.78 ft
 # Average female height (US): 5.34 ft
 # https://en.wikipedia.org/wiki/List_of_average_human_height_worldwide (2011 - 2014)
@@ -58,7 +61,7 @@ def create(plt, hard, sample_fraction):
     print(original_sep_line)
 
     plt.figure(1)
-    final_sep_line = learn(train_df, test_df, sep_line, 1, hard)
+    final_sep_line = learn(train_df, test_df, sep_line, 50, hard)
 
 
     plt.figure(1)
@@ -68,6 +71,17 @@ def create(plt, hard, sample_fraction):
     plt.show()
     #print(total_errors[49])
     #
+    leastError = total_errors[0]
+
+    for x in range(0, len(total_errors)):
+        nextError = total_errors[x]
+        print(total_errors[x])
+        if(leastError > nextError):
+            leastError = nextError
+    print("This is the least most error in the graph ")
+    print(leastError)
+    print("\n")
+
     plt.figure(2)
     plot_male_and_females(df)
     #plot_separation(original_sep_line, df, color="g")
@@ -187,9 +201,7 @@ def calculate_weight_after_delta_d(current_weight, current_pattern, hard_activat
     return current_weight
 
 
-errors = []
-total_errors = []
-weights = [[], [], []]
+
 
 
 def learn(train_df, test_df, sep_line, number_of_iterations, hard):
