@@ -66,15 +66,15 @@ def create(plt, hard, sample_fraction):
     plot_separation(original_sep_line, df, color="g")
     plot_separation(sep_line, df, color="b")
     plt.show()
-    print(total_errors[49])
+    #print(total_errors[49])
     #
-    # plt.figure(2)
-    # plot_male_and_females(all_data)
-    # plot_separation(original_sep_line, all_data, color="g")
-    # plot_separation(final_sep_line, all_data, color="b")
+    plt.figure(2)
+    plot_male_and_females(df)
+    #plot_separation(original_sep_line, df, color="g")
+    plot_separation(final_sep_line, df, color="b")
     #
-    # plt.axis((0, 1, 0, 1))
-    # plt.show()
+    plt.axis((0, 1, 0, 1))
+    plt.show()
 
 
 
