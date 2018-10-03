@@ -19,13 +19,13 @@ alpha = 0.1
 def main(plt):
     # Uncomment if need to generate new dataset
     # generate_data()
-    create(plt, True, 0.25)
+    # create(plt, True, 0.25)
     # create(plt, True, 0.5)
     # create(plt, True, 0.75)
 
     # create(plt, False, 0.25)
     # create(plt, False, 0.5)
-    # create(plt, False, 0.75)
+    create(plt, False, 0.75)
 
 
 def create(plt, hard, sample_fraction):
@@ -46,31 +46,35 @@ def create(plt, hard, sample_fraction):
 
     test_df = df[~df.isin(train_df)]
 
-    plt.figure(1)
-    plt = plot_male_and_females(df)
-    plt.figure(2)
-    plt = plot_male_and_females(df)
+    # plt.figure(1)
+    # plt = plot_male_and_females(df)
+    # plt.figure(2)
+    # plt = plot_male_and_females(df)
 
     rand_x = random.uniform(0.1, 0.9)
     print(rand_x)
     sep_line = [ -rand_x,-rand_x,rand_x]
     original_sep_line = sep_line
+    print(original_sep_line)
 
     plt.figure(1)
-    final_sep_line = learn(train_df, test_df, sep_line, 1, hard)
+    final_sep_line = learn(train_df, test_df, sep_line, 50, hard)
+
 
     plt.figure(1)
     plot_male_and_females(df)
     plot_separation(original_sep_line, df, color="g")
     plot_separation(sep_line, df, color="b")
-
-    plt.figure(2)
-    plot_male_and_females(all_data)
-    plot_separation(original_sep_line, all_data, color="g")
-    plot_separation(final_sep_line, all_data, color="b")
-
-    plt.axis((0, 1, 0, 1))
     plt.show()
+    print(total_errors[49])
+    #
+    # plt.figure(2)
+    # plot_male_and_females(all_data)
+    # plot_separation(original_sep_line, all_data, color="g")
+    # plot_separation(final_sep_line, all_data, color="b")
+    #
+    # plt.axis((0, 1, 0, 1))
+    # plt.show()
 
 
 
@@ -193,7 +197,7 @@ def learn(train_df, test_df, sep_line, number_of_iterations, hard):
     final_sep_line = None
 
     for i in range(0, number_of_iterations):
-        #print("iteration", i)
+        print("iteration", i)
 
         total_error = calculate_error(test_df, sep_line)
         total_errors.append(total_error)
