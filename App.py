@@ -51,14 +51,14 @@ def create(plt, hard, sample_fraction):
     # plt.figure(2)
     # plt = plot_male_and_females(df)
 
-    rand_x = random.uniform(0.1, 0.9)
-    print(rand_x)
-    sep_line = [ -rand_x,-rand_x,rand_x]
+    rand_x = 0.1
+
+    sep_line = [ -1, -1 , random.uniform(0.5,1)]
     original_sep_line = sep_line
     print(original_sep_line)
 
     plt.figure(1)
-    final_sep_line = learn(train_df, test_df, sep_line, 50, hard)
+    final_sep_line = learn(train_df, test_df, sep_line, 1, hard)
 
 
     plt.figure(1)
