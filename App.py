@@ -4,6 +4,9 @@ import pandas as pd
 import random
 import datetime
 
+ni = 1000
+epsilon = 0.00005
+alpha = 0.1
 # Average male height (US): 5.78 ft
 # Average female height (US): 5.34 ft
 # https://en.wikipedia.org/wiki/List_of_average_human_height_worldwide (2011 - 2014)
@@ -48,12 +51,13 @@ def create(plt, hard, sample_fraction):
     plt.figure(2)
     plt = plot_male_and_females(df)
 
-    rand_x = 0.1
-    sep_line = [random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x)]
+    rand_x = random.uniform(0.1, 0.9)
+    print(rand_x)
+    sep_line = [ -rand_x,-rand_x,rand_x]
     original_sep_line = sep_line
 
     plt.figure(1)
-    final_sep_line = learn(train_df, test_df, sep_line, 100, hard)
+    final_sep_line = learn(train_df, test_df, sep_line, 1, hard)
 
     plt.figure(1)
     plot_male_and_females(df)
@@ -64,7 +68,7 @@ def create(plt, hard, sample_fraction):
     plot_male_and_females(all_data)
     plot_separation(original_sep_line, all_data, color="g")
     plot_separation(final_sep_line, all_data, color="b")
-    plt.figure(2)
+
     plt.axis((0, 1, 0, 1))
     plt.show()
 
@@ -147,7 +151,7 @@ def plot_separation(separation_line, data, color="0.18"):
     ax.arrow(center, y_mid, 0.05, 0.05, head_width=0.025, head_length=0.025, fc='k', ec='k', color="b")
 
     plt.plot([data[0].min(), data[0].max()], [y1, y2], color=color)
-
+    plt.axis((0,1,0,1))
     return plt
 
 # def calculate_weight_after_delta_d(current_weight, current_pattern, hard_activation=True, alpha=alpha, k=0.5):
@@ -189,7 +193,7 @@ def learn(train_df, test_df, sep_line, number_of_iterations, hard):
     final_sep_line = None
 
     for i in range(0, number_of_iterations):
-        print("iteration", i)
+        #print("iteration", i)
 
         total_error = calculate_error(test_df, sep_line)
         total_errors.append(total_error)

@@ -114,9 +114,9 @@ plt.legend(loc='upper right')
 plt.xlabel("Height(ft)")
 plt.ylabel("Weight(lbs)")
 
-randX = 0.001
-#SepLine = [random.uniform(-randX, randX), random.uniform(-randX, randX), random.uniform(-randX, randX)]
-#plot_xy_sep_line(SepLine,hardActGraph,color="g")
+randX = random.uniform(0.1,0.9)
+SepLine = [-randX, - randX, randX]
+plot_xy_sep_line(SepLine,hardActGraph,color="g")
 
 
 plt.show()
