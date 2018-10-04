@@ -16,82 +16,86 @@ weights = [[], [], []]
 # Average female weight (US): 168.4 lb
 # https://en.wikipedia.org/wiki/Human_body_weight (2011 - 2014)
 
+# *******************
+# Generates random data and writes to text file
+# *******************
+def generate_data():
+    male_average_height = 5.78
+    male_average_weight = 195.8
+    female_average_height = 5.34
+    female_average_weight = 168.4
+    file = open('SampleData.txt', 'w')
+    for x in range(0, 2):
+        for y in range(0, 2000):
+            if x == 0:
+                height = np.random.normal(male_average_height, 0.3)
+                weight = np.random.normal(male_average_weight, 20)
+                file.write(str(height) + "," + str(weight) + "," + str(x) + "\n")
+            else:
+                height = np.random.normal(female_average_height, 0.3)
+                weight = np.random.normal(female_average_weight, 20)
+                file.write(str(height) + "," + str(weight) + "," + str(x) + "\n")
+    file.close()
 
+
+# *******************
+# Main function to case each specific scenario (Run 1 at a time)
+# *******************
 def main():
     # Uncomment if need to generate new dataset
     # generate_data()
-    # create(True, 0.25)
-    create(True, 0.75)
+    # begin_learning(True, 0.25)
+    begin_learning(True, 0.75)
 
-    # create(False, 0.25)
-    # create(False, 0.75)
-
-
-def normalize_data_frame(dataframe):
-    ndf = dataframe.copy()
-
-    min_height = dataframe[0].min()
-    max_height = dataframe[0].max()
-    min_weight = dataframe[1].min()
-    max_weight = dataframe[1].max()
-
-    ndf[0] = (dataframe[0] - min_height) / (max_height - min_height)
-    ndf[1] = (dataframe[1] - min_weight) / (max_weight - min_weight)
-    return ndf
+    # begin_learning(False, 0.25)
+    # begin_learning(False, 0.75)
 
 
-def create(hard, sample_fraction):
-    all_data = pd.read_csv("SampleData.txt", header=None)
+# *******************
+# Function to set up and begin learning process
+# *******************
+def begin_learning(hard, sample_fraction):
 
-    df = normalize_data_frame(all_data)
+    normalized_data = normalize_data(pd.read_csv("SampleData.txt", header=None))
 
-    train_df = df.sample(frac=sample_fraction)
+    training_data = normalized_data.sample(frac=sample_fraction)
 
-    test_df = df[~df.isin(train_df)]
+    testing_data = normalized_data[~normalized_data.isin(training_data)]
 
-    rand_x = 0.1
-    sep_line = [random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x)]
+    # random_separation = [random.uniform(-0.1, 0.1), random.uniform(-0.1, 0.1), random.uniform(-0.1, 0.1)]
+    random_separation = [1, -1, 0.5]
 
-
-    # sep_line = [ -1, -1 , random.uniform(0.5,1)]
-    original_sep_line = sep_line
+    original_separation = random_separation
 
     plt.figure(1)
-    final_sep_line = learn(train_df, test_df, sep_line, 1000, hard)
-
-    plt.figure(1)
-    plot_male_and_females(df)
-    plot_separation(original_sep_line, df, color="g")
-    plot_separation(sep_line, df, color="b")
+    final_separation = learn(training_data, testing_data, random_separation, 10, hard)
+    plot_male_and_females(normalized_data)
+    plot_separation(original_separation, normalized_data, color="green")
+    plot_separation(random_separation, normalized_data, color="blue")
     plt.show()
-    #print(total_errors[49])
-    #
-
-    # leastError = total_errors[0]
-    # for x in range(0, len(total_errors)):
-    #     nextError = total_errors[x]
-    #     print(total_errors[x])
-    #     if(leastError > nextError):
-    #         leastError = nextError
-    # print("This is the least most error in the graph ")
-    # print(leastError)
-    # print("\n")
-
-    # print("Total Error: ")
-    # print(total_errors[len(total_errors)-1])
 
     plt.figure(2)
-    plot_male_and_females(df)
-    plot_separation(final_sep_line, df, color="b")
-    #
+    plot_male_and_females(normalized_data)
+    plot_separation(final_separation, normalized_data, color="blue")
     plt.axis((0, 1, 0, 1))
     plt.show()
 
     print_errors_and_weights()
 
+
+# *******************
+# Normalize the passed in dataset to between 0 and 1
+# *******************
+def normalize_data(all_data):
+    normalized_data = all_data.copy()
+
+    normalized_data[0] = (all_data[0] - all_data[0].min()) / (all_data[0].max() - all_data[0].min())
+    normalized_data[1] = (all_data[1] - all_data[1].min()) / (all_data[1].max() - all_data[1].min())
+
+    return normalized_data
+
+
 def plot_male_and_females(data_frame):
-    area = 50
-    alpha = 0.1
     males = data_frame[data_frame[2] == 0]
     females = data_frame[data_frame[2] == 1]
 
@@ -101,17 +105,12 @@ def plot_male_and_females(data_frame):
     female_x = females[0]
     female_y = females[1]
 
-    male_plot = plt.scatter(male_x, male_y, s=area, c=np.full(males[2].shape, 'r'), alpha=alpha)
-    female_plot = plt.scatter(female_x, female_y, s=area, c=np.full(females[2].shape, 'g'), alpha=alpha)
+    male = plt.scatter(male_x, male_y, s=50, c=np.full(males[2].shape, 'red'), alpha=0.1)
+    female = plt.scatter(female_x, female_y, s=50, c=np.full(females[2].shape, 'green'), alpha=0.1)
 
-    plt.legend((male_plot, female_plot),
-               ('Male', 'Female'),
-               scatterpoints=1,
-               loc='lower left',
-               ncol=3,
-               fontsize=8)
+    plt.legend((male, female), ('Male', 'Female'), scatterpoints=1, loc='lower left', ncol=3, fontsize=6)
 
-    plt.title("Weight and Height for Male vs Female")
+    plt.title("Male & Female - Weight vs Height")
     plt.xlabel("Height (ft)")
     plt.ylabel("Weight (lbs)")
 
@@ -136,35 +135,7 @@ def print_errors_and_weights():
     print("End Bias: %.4f" % weights[2][len(weights) - 1])
     print("----------------------------------------")
 
-# *******************
-# Generates random data and writes to text file
-# *******************
-def generate_data():
-    male_average_height = 5.78
-    male_average_weight = 195.8
-    female_average_height = 5.34
-    female_average_weight = 168.4
-    file = open('SampleData.txt', 'w')
-    for x in range(0, 2):
-        for y in range(0, 2000):
-            if x == 0:
-                height = np.random.normal(male_average_height, 0.3)
-                weight = np.random.normal(male_average_weight, 20)
-                file.write(str(height) + "," + str(weight) + "," + str(x) + "\n")
-            else:
-                height = np.random.normal(female_average_height, 0.3)
-                weight = np.random.normal(female_average_weight, 20)
-                file.write(str(height) + "," + str(weight) + "," + str(x) + "\n")
-    file.close()
 
-
-def normalize_data(all_data):
-    normalized_data = all_data.copy()
-
-    normalized_data[0] = (all_data[0] - all_data[0].min()) / (all_data[0].max() - all_data[0].min())
-    normalized_data[1] = (all_data[1] - all_data[1].min()) / (all_data[1].max() - all_data[1].min())
-
-    return normalized_data
 
 
 def plot_separation(separation_line, data, color="0.18"):
