@@ -3,34 +3,41 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import random
 
+epsilon = 0.00005
 alpha = 0.1
+errors = []
+total_errors = []
 weights = [[], [], []]
-training_error = []
-testing_error = []
+# Average male height (US): 5.78 ft
+# Average female height (US): 5.34 ft
+# https://en.wikipedia.org/wiki/List_of_average_human_height_worldwide (2011 - 2014)
+
+# Average male weight (US): 195.8 lb
+# Average female weight (US): 168.4 lb
+# https://en.wikipedia.org/wiki/Human_body_weight (2011 - 2014)
 
 
 def main():
     # Uncomment if need to generate new dataset
     # generate_data()
+    # create(True, 0.25)
+    create(True, 0.75)
 
-    # 25%, hard - DONE
-    create(True, 0.25)
-
-    # 75%, hard
-    # create(True, 0.75)
-
-    # 25%, soft
     # create(False, 0.25)
-
-    # 75%, soft
     # create(False, 0.75)
 
 
-def normalize_data_frame(data):
-    copy_normalized = data.copy()
-    copy_normalized[0] = (data[0] - data[0].min()) / (data[0].max() - data[0].min())
-    copy_normalized[1] = (data[1] - data[1].min()) / (data[1].max() - data[1].min())
-    return copy_normalized
+def normalize_data_frame(dataframe):
+    ndf = dataframe.copy()
+
+    min_height = dataframe[0].min()
+    max_height = dataframe[0].max()
+    min_weight = dataframe[1].min()
+    max_weight = dataframe[1].max()
+
+    ndf[0] = (dataframe[0] - min_height) / (max_height - min_height)
+    ndf[1] = (dataframe[1] - min_weight) / (max_weight - min_weight)
+    return ndf
 
 
 def create(hard, sample_fraction):
@@ -44,6 +51,8 @@ def create(hard, sample_fraction):
 
     rand_x = 0.1
     sep_line = [random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x)]
+
+
     # sep_line = [ -1, -1 , random.uniform(0.5,1)]
     original_sep_line = sep_line
 
@@ -55,6 +64,21 @@ def create(hard, sample_fraction):
     plot_separation(original_sep_line, df, color="g")
     plot_separation(sep_line, df, color="b")
     plt.show()
+    #print(total_errors[49])
+    #
+
+    # leastError = total_errors[0]
+    # for x in range(0, len(total_errors)):
+    #     nextError = total_errors[x]
+    #     print(total_errors[x])
+    #     if(leastError > nextError):
+    #         leastError = nextError
+    # print("This is the least most error in the graph ")
+    # print(leastError)
+    # print("\n")
+
+    # print("Total Error: ")
+    # print(total_errors[len(total_errors)-1])
 
     plt.figure(2)
     plot_male_and_females(df)
@@ -87,7 +111,7 @@ def plot_male_and_females(data_frame):
                ncol=3,
                fontsize=8)
 
-    plt.title("Male & Female - Weight vs Height")
+    plt.title("Weight and Height for Male vs Female")
     plt.xlabel("Height (ft)")
     plt.ylabel("Weight (lbs)")
 
@@ -96,13 +120,13 @@ def plot_male_and_females(data_frame):
 
 def print_errors_and_weights():
     print("----------------------------------------")
-    print("Training Error Start: %.4f" % training_error[0])
-    print("Training Error End: %.4f" % training_error[len(training_error) - 1])
-    print("Training Error Best: %.4f" % min(training_error))
+    print("Training Error Start: %.4f" % errors[0])
+    print("Training Error End: %.4f" % errors[len(errors) - 1])
+    print("Training Error Best: %.4f" % min(errors))
     print("----------------------------------------")
-    print("Testing Error Start: %.4f" % testing_error[0])
-    print("Testing Error End: %.4f" % testing_error[len(testing_error) - 1])
-    print("Testing Error Best: %.4f" % min(testing_error))
+    print("Testing Error Start: %.4f" % total_errors[0])
+    print("Testing Error End: %.4f" % total_errors[len(total_errors) - 1])
+    print("Testing Error Best: %.4f" % min(total_errors))
     print("----------------------------------------")
     print("Initial X-Weight (Random): %.4f" % weights[0][0])
     print("Initial Y-Weight (Random): %.4f" % weights[1][0])
@@ -194,12 +218,12 @@ def learn(train_df, test_df, sep_line, number_of_iterations, hard):
         print("iteration", i)
 
         total_error = calculate_error(test_df, sep_line)
-        testing_error.append(total_error)
+        total_errors.append(total_error)
 
         plot_separation(sep_line, test_df, color=str(i / number_of_iterations))
 
         err = calculate_error(train_df, sep_line)
-        training_error.append(err)
+        errors.append(err)
 
         weights[0].append(sep_line[0])
         weights[1].append(sep_line[1])
