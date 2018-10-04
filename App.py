@@ -2,95 +2,68 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import random
-import datetime
 
-ni = 1000
-epsilon = 0.00005
 alpha = 0.1
-errors = []
-total_errors = []
 weights = [[], [], []]
-# Average male height (US): 5.78 ft
-# Average female height (US): 5.34 ft
-# https://en.wikipedia.org/wiki/List_of_average_human_height_worldwide (2011 - 2014)
-
-# Average male weight (US): 195.8 lb
-# Average female weight (US): 168.4 lb
-# https://en.wikipedia.org/wiki/Human_body_weight (2011 - 2014)
+training_error = []
+testing_error = []
 
 
-def main(plt):
+def main():
     # Uncomment if need to generate new dataset
     # generate_data()
-    # create(plt, True, 0.25)
-    # create(plt, True, 0.5)
-    # create(plt, True, 0.75)
 
-    # create(plt, False, 0.25)
-    # create(plt, False, 0.5)
-    create(plt, False, 0.75)
+    # 25%, hard - DONE
+    create(True, 0.25)
+
+    # 75%, hard
+    # create(True, 0.75)
+
+    # 25%, soft
+    # create(False, 0.25)
+
+    # 75%, soft
+    # create(False, 0.75)
 
 
-def create(plt, hard, sample_fraction):
+def normalize_data_frame(data):
+    copy_normalized = data.copy()
+    copy_normalized[0] = (data[0] - data[0].min()) / (data[0].max() - data[0].min())
+    copy_normalized[1] = (data[1] - data[1].min()) / (data[1].max() - data[1].min())
+    return copy_normalized
+
+
+def create(hard, sample_fraction):
     all_data = pd.read_csv("SampleData.txt", header=None)
 
-    # male_data = only male data [ 0 - 1999 ]
-    # male_data[x] ; x = 0,1,2 same as above
-    male_data = all_data[all_data[2] == 0]
+    df = normalize_data_frame(all_data)
 
-    # female_data = only male data [ 2000 - 3999 ]
-    # female_data[x] ; x = 0,1,2 same as above
-    female_data = all_data[all_data[2] == 1]
-
-    df = normalize_data(all_data)
-
-    # smaller amount of random items
     train_df = df.sample(frac=sample_fraction)
 
     test_df = df[~df.isin(train_df)]
 
-    # plt.figure(1)
-    # plt = plot_male_and_females(df)
-    # plt.figure(2)
-    # plt = plot_male_and_females(df)
-
     rand_x = 0.1
-
-    sep_line = [ -1, -1 , random.uniform(0.5,1)]
+    sep_line = [random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x), random.uniform(-rand_x, rand_x)]
+    # sep_line = [ -1, -1 , random.uniform(0.5,1)]
     original_sep_line = sep_line
-    print(original_sep_line)
 
     plt.figure(1)
-    final_sep_line = learn(train_df, test_df, sep_line, 50, hard)
-
+    final_sep_line = learn(train_df, test_df, sep_line, 1000, hard)
 
     plt.figure(1)
     plot_male_and_females(df)
     plot_separation(original_sep_line, df, color="g")
     plot_separation(sep_line, df, color="b")
     plt.show()
-    #print(total_errors[49])
-    #
-    leastError = total_errors[0]
-
-    for x in range(0, len(total_errors)):
-        nextError = total_errors[x]
-        print(total_errors[x])
-        if(leastError > nextError):
-            leastError = nextError
-    print("This is the least most error in the graph ")
-    print(leastError)
-    print("\n")
 
     plt.figure(2)
     plot_male_and_females(df)
-    #plot_separation(original_sep_line, df, color="g")
     plot_separation(final_sep_line, df, color="b")
     #
     plt.axis((0, 1, 0, 1))
     plt.show()
 
-
+    print_errors_and_weights()
 
 def plot_male_and_females(data_frame):
     area = 50
@@ -114,12 +87,30 @@ def plot_male_and_females(data_frame):
                ncol=3,
                fontsize=8)
 
-    plt.title("Weight and Height for Male vs Female")
+    plt.title("Male & Female - Weight vs Height")
     plt.xlabel("Height (ft)")
     plt.ylabel("Weight (lbs)")
 
     return plt
 
+
+def print_errors_and_weights():
+    print("----------------------------------------")
+    print("Training Error Start: %.4f" % training_error[0])
+    print("Training Error End: %.4f" % training_error[len(training_error) - 1])
+    print("Training Error Best: %.4f" % min(training_error))
+    print("----------------------------------------")
+    print("Testing Error Start: %.4f" % testing_error[0])
+    print("Testing Error End: %.4f" % testing_error[len(testing_error) - 1])
+    print("Testing Error Best: %.4f" % min(testing_error))
+    print("----------------------------------------")
+    print("Initial X-Weight (Random): %.4f" % weights[0][0])
+    print("Initial Y-Weight (Random): %.4f" % weights[1][0])
+    print("Initial Bias (Random): %.4f" % weights[2][0])
+    print("End X-Weight %.4f" % weights[0][len(weights) - 1])
+    print("End Y-Weight: %.4f" % weights[1][len(weights) - 1])
+    print("End Bias: %.4f" % weights[2][len(weights) - 1])
+    print("----------------------------------------")
 
 # *******************
 # Generates random data and writes to text file
@@ -172,13 +163,8 @@ def plot_separation(separation_line, data, color="0.18"):
     plt.axis((0,1,0,1))
     return plt
 
-# def calculate_weight_after_delta_d(current_weight, current_pattern, hard_activation=True, alpha=alpha, k=0.5):
 
-
-def calculate_weight_after_delta_d(current_weight, current_pattern, hard_activation=True):
-    alpha = 0.1
-    k = 0.5
-
+def calculate_weight_after_delta_d(current_weight, current_pattern, hard_activation=True, alpha=alpha, k=0.5):
     net = (current_weight[0] * current_pattern[0] +
            current_weight[1] * current_pattern[1] +
            current_weight[2])
@@ -201,29 +187,25 @@ def calculate_weight_after_delta_d(current_weight, current_pattern, hard_activat
     return current_weight
 
 
-
-
-
 def learn(train_df, test_df, sep_line, number_of_iterations, hard):
-    epsilon = 0.00005
     final_sep_line = None
 
     for i in range(0, number_of_iterations):
         print("iteration", i)
 
         total_error = calculate_error(test_df, sep_line)
-        total_errors.append(total_error)
+        testing_error.append(total_error)
 
         plot_separation(sep_line, test_df, color=str(i / number_of_iterations))
 
         err = calculate_error(train_df, sep_line)
-        errors.append(err)
+        training_error.append(err)
 
         weights[0].append(sep_line[0])
         weights[1].append(sep_line[1])
         weights[2].append(sep_line[2])
 
-        if epsilon > total_error:
+        if total_error < 0.00005:
             break
 
         # mix up the test data frame so that we learn in different ways(?)
@@ -304,4 +286,4 @@ def get_confusion_matrix(data_frame, sep_line):
 
 
 if __name__ == "__main__":
-    main(plt)
+    main()
