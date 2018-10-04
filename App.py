@@ -70,13 +70,13 @@ def begin_learning(hard, sample_fraction):
     plt.figure(1)
     final_separation = learn(training_data, testing_data, random_separation, 10, hard)
     plot_male_and_females(normalized_data)
-    plot_separation(original_separation, normalized_data, color="green")
-    plot_separation(random_separation, normalized_data, color="blue")
+    # plot_separation(original_separation, normalized_data, color="green")
+    # plot_separation(random_separation, normalized_data, color="blue")
     plt.show()
 
     plt.figure(2)
     plot_male_and_females(normalized_data)
-    plot_separation(final_separation, normalized_data, color="blue")
+    plot_separation(final_separation, normalized_data, color="red")
     plt.axis((0, 1, 0, 1))
     plt.show()
 
@@ -105,8 +105,8 @@ def plot_male_and_females(data_frame):
     female_x = females[0]
     female_y = females[1]
 
-    male = plt.scatter(male_x, male_y, s=50, c=np.full(males[2].shape, 'red'), alpha=0.1)
-    female = plt.scatter(female_x, female_y, s=50, c=np.full(females[2].shape, 'green'), alpha=0.1)
+    male = plt.scatter(male_x, male_y, s=50, c=np.full(males[2].shape, 'orange'), alpha=0.1)
+    female = plt.scatter(female_x, female_y, s=50, c=np.full(females[2].shape, 'blue'), alpha=0.1)
 
     plt.legend((male, female), ('Male', 'Female'), scatterpoints=1, loc='lower left', ncol=3, fontsize=6)
 

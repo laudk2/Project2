@@ -13,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Project2$App.coverage" NAME="App Coverage Results" MODIFIED="1538657041297" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Project2$App.coverage" NAME="App Coverage Results" MODIFIED="1538660374539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Project2$pasdk.coverage" NAME="pasdk Coverage Results" MODIFIED="1538490815641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
@@ -83,14 +83,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1907" />
-          <entry key="txt" value="32" />
+          <entry key="py" value="1924" />
+          <entry key="txt" value="38" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="32" />
-          <entry key="Python" value="1907" />
+          <entry key="PLAIN_TEXT" value="38" />
+          <entry key="Python" value="1924" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -132,11 +132,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/App.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="104" column="25" lean-forward="true" selection-start-line="104" selection-start-column="25" selection-end-line="104" selection-end-column="25" />
+            <state relative-caret-position="357">
+              <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <marker date="1538657356782" expanded="true" signature="1429:1434" ph="..." />
+                <marker date="1538660374506" expanded="true" signature="1429:1434" ph="..." />
               </folding>
             </state>
           </provider>
@@ -333,7 +333,14 @@
       <option name="project" value="LOCAL" />
       <updated>1538622922395</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="gfdhfg">
+      <created>1538658597086</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1538658597086</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -346,15 +353,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="916" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22441365" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15830946" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32952183" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38149688" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.22122762" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3991684" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -368,7 +375,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" sideWeight="0.49906892" visible="true" weight="0.23454158" />
+      <window_info active="true" anchor="right" id="SciView" order="3" sideWeight="0.49906892" visible="true" weight="0.31518623" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" x="0" y="0" width="300" height="637" id="Documentation" order="5" sideWeight="0.5009311" side_tool="true" weight="0.23457584" />
     </layout>
@@ -384,7 +391,8 @@
     <MESSAGE value="got 2nd graph to show only the final seperation line" />
     <MESSAGE value="Files" />
     <MESSAGE value="files done" />
-    <option name="LAST_COMMIT_MESSAGE" value="files done" />
+    <MESSAGE value="gfdhfg" />
+    <option name="LAST_COMMIT_MESSAGE" value="gfdhfg" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/Documents/VCU/Fall 2018/CMSC409 Artificial Intelligence/Project_1/Skynet_Project1/App.py" />
@@ -428,11 +436,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/App.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="104" column="25" lean-forward="true" selection-start-line="104" selection-start-column="25" selection-end-line="104" selection-end-column="25" />
+        <state relative-caret-position="357">
+          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <marker date="1538657356782" expanded="true" signature="1429:1434" ph="..." />
+            <marker date="1538660374506" expanded="true" signature="1429:1434" ph="..." />
           </folding>
         </state>
       </provider>
